@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TRAK-IT</title>
+    <link rel="stylesheet" href="../css/output.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link rel="stylesheet" href="../css/table.css" />
+    <link rel="stylesheet" href="../css/modal.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 font-sans text-gray-800">
+    <header class="bg-white shadow-lg mb-8">
+      <div
+        class="container mx-auto px-6 py-6 flex justify-between items-center relative"
+      >
+        <h2 class="text-3xl font-semibold text-primary-700">Dashboard</h2>
+        <div class="relative">
+          <div
+            id="name-container"
+            class="flex items-center space-x-2 text-lg font-medium text-gray-600 cursor-pointer hover:text-primary-700"
+            onclick="toggleMenu()"
+          >
+            <span class=""> <p id="name"></p></span>
+
+            <i class="fas fa-chevron-down"></i>
+          </div>
+
+          <div
+            id="menu"
+            class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-48 hidden z-50"
+          >
+            <ul class="py-2 text-sm text-gray-700">
+              <li>
+                <a
+                  href="#"
+                  class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                >
+                  <i class="fas fa-key mr-2"></i> Change Password
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                  onclick="logout()"
+                >
+                  <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="mt-8 px-6 w-full">
+      <section class="mb-8">
+        <div
+          class="flex justify-between items-center bg-white p-8 rounded-lg shadow-xl transition transform hover:shadow-2xl"
+        >
+          <h1
+            class="text-4xl font-bold text-primary-700 tracking-wide"
+            id="roomName"
+          >
+            Loading Room Name...
+          </h1>
+          <a
+            href="./user-inputs.html"
+            class="inline-block bg-primary-600 text-white text-lg p-2 md:px-8 md:py-4 rounded-lg shadow-lg hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition duration-200 ease-in-out transform hover:scale-105"
+          >
+            + Add Data
+          </a>
+        </div>
+      </section>
+
+      <section class="bg-white p-8 rounded-lg shadow-lg">
+        <div class="mb-6">
+          <h3 class="text-2xl font-semibold text-gray-700">Room Data</h3>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table
+            id="room-data-table"
+            class="min-w-full table-auto border-collapse cursor-pointer border border-gray-300 rounded-lg shadow-lg"
+          >
+            <thead>
+              <tr>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  Article
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  Description
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  Stock Number
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  Serial Number
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  Model
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  Unit of Measure
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  Unit Value
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  <small>Balance Per Card (Quantity)</small>
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  <small>On Hand Per Count (Quantity)</small>
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  <small>Shortage/Overage (Quantity)</small>
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  <small>Shortage/Overage (Value)</small>
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  Remarks
+                </th>
+                <th
+                  class="px-6 py-4 border bg-primary-500 text-white text-center text-sm font-semibold"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-300" id="roomDataBody">
+              <tr class="hover:bg-gray-50 transition duration-200">
+                <td
+                  colspan="13"
+                  class="bg-gray-100 p-8 text-center font-bold text-gray-600"
+                >
+                  Loading Room Data...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- DELETE MODAL -->
+    <div
+      id="deleteModal"
+      class="modal fixed inset-0 z-50 hidden flex items-center justify-center"
+    >
+      <div
+        class="modal-background absolute inset-0 bg-gray-800 bg-opacity-50"
+      ></div>
+
+      <div
+        class="modal-card absolute bg-white rounded-lg shadow-lg w-11/12 max-w-lg overflow-hidden"
+      >
+        <!-- Header -->
+        <header
+          class="modal-card-head flex items-center p-4 border-b border-gray-200"
+        >
+          <i class="mdi mdi-trash-can-outline text-red-500 text-2xl mr-3"></i>
+          <p class="modal-card-title text-xl font-semibold text-black">
+            Confirm <span class="text-red-500">Deletion</span>
+          </p>
+        </header>
+        <!-- Body -->
+        <section class="modal-card-body p-6 text-gray-700">
+          <p>
+            Are you sure you want to
+            <span class="text-red-500">delete</span> this item? Once deleted,
+            this action <strong>cannot be undone</strong>.
+          </p>
+        </section>
+        <!-- Buttons -->
+        <footer
+          class="modal-card-foot flex justify-end items-center p-4 bg-gray-100 border-t border-gray-200"
+        >
+          <button
+            id="cancelDelete"
+            class="button bg-gray-300 text-gray-700 rounded-md px-4 py-2 hover:bg-gray-400 transition"
+          >
+            Cancel
+          </button>
+          <button
+            id="confirmDelete"
+            class="button bg-red-500 text-white rounded-md px-4 py-2 ml-3 hover:bg-red-600 transition"
+          >
+            Confirm
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div
+      id="editModal"
+      class="modal fixed inset-0 z-50 hidden flex items-center justify-center"
+    >
+      <div
+        class="modal-background absolute inset-0 bg-gray-800 bg-opacity-50"
+      ></div>
+
+      <div
+        class="modal-card relative bg-white rounded-lg shadow-lg w-11/12 max-w-2xl overflow-auto"
+        style="max-height: 90vh"
+      >
+        <header
+          class="modal-card-head flex items-center p-4 border-b border-gray-200"
+        >
+          <i class="mdi mdi-pencil-outline text-primary-500 text-2xl mr-3"></i>
+          <p class="modal-card-title text-xl font-semibold text-black">
+            Edit Room Data
+          </p>
+        </header>
+
+        <section class="modal-card-body p-6 max-h-[70vh] overflow-y-auto">
+          <form id="editForm" class="space-y-6">
+            <!-- Article -->
+            <div class="flex flex-col">
+              <label for="editArticle" class="text-gray-700 text-sm font-medium"
+                >Article</label
+              >
+              <input
+                type="text"
+                id="editArticle"
+                name="article"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Article"
+              />
+            </div>
+
+            <!-- Description -->
+            <div class="flex flex-col">
+              <label
+                for="editDescription"
+                class="text-gray-700 text-sm font-medium"
+                >Description</label
+              >
+              <input
+                type="text"
+                id="editDescription"
+                name="description"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Description"
+              />
+            </div>
+
+            <!-- Stock Number -->
+            <div class="flex flex-col">
+              <label
+                for="editStockNumber"
+                class="text-gray-700 text-sm font-medium"
+                >Stock Number</label
+              >
+              <input
+                type="text"
+                id="editStockNumber"
+                name="stockNumber"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Stock Number"
+              />
+            </div>
+
+            <!-- Serial Number -->
+            <div class="flex flex-col">
+              <label
+                for="editSerialNumber"
+                class="text-gray-700 text-sm font-medium"
+                >Serial Number</label
+              >
+              <input
+                type="text"
+                id="editSerialNumber"
+                name="SerialNumber"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Serial Number"
+              />
+            </div>
+
+            <!-- Model -->
+            <div class="flex flex-col">
+              <label for="editmodel" class="text-gray-700 text-sm font-medium"
+                >Model</label
+              >
+              <input
+                type="text"
+                id="editmodel"
+                name="stockNumber"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Model"
+              />
+            </div>
+
+            <!-- Unit of Measure -->
+            <div class="flex flex-col">
+              <label
+                for="editUnitOfMeasure"
+                class="text-gray-700 text-sm font-medium"
+                >Unit of Measure</label
+              >
+              <input
+                type="text"
+                id="editUnitOfMeasure"
+                name="unitOfMeasure"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Unit of Measure"
+              />
+            </div>
+
+            <!-- Unit Value -->
+            <div class="flex flex-col">
+              <label
+                for="editUnitValue"
+                class="text-gray-700 text-sm font-medium"
+                >Unit Value</label
+              >
+              <input
+                type="text"
+                id="editUnitValue"
+                name="unitValue"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Unit Value"
+              />
+            </div>
+
+            <!-- Balance Per Card -->
+            <div class="flex flex-col">
+              <label
+                for="editBalancePerCard"
+                class="text-gray-700 text-sm font-medium"
+                >Balance Per Card (Quantity)</label
+              >
+              <input
+                type="number"
+                id="editBalancePerCard"
+                name="balancePerCard"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Balance Per Card"
+              />
+            </div>
+
+            <!-- On Hand Per Count -->
+            <div class="flex flex-col">
+              <label
+                for="editOnHandPerCount"
+                class="text-gray-700 text-sm font-medium"
+                >On Hand Per Count (Quantity)</label
+              >
+              <input
+                type="number"
+                id="editOnHandPerCount"
+                name="onHandPerCount"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit On Hand Per Count"
+              />
+            </div>
+
+            <!-- Shortage Quantity -->
+            <div class="flex flex-col">
+              <label
+                for="editShortageQuantity"
+                class="text-gray-700 text-sm font-medium"
+                >Shortage/Overage Quantity</label
+              >
+              <input
+                type="number"
+                id="editShortageQuantity"
+                name="shortageQuantity"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Shortage Quantity"
+              />
+            </div>
+
+            <!-- Shortage Value -->
+            <div class="flex flex-col">
+              <label
+                for="editShortageValue"
+                class="text-gray-700 text-sm font-medium"
+                >Shortage Value</label
+              >
+              <input
+                type="text"
+                id="editShortageValue"
+                name="shortageValue"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Shortage Value"
+              />
+            </div>
+
+            <!-- Remarks -->
+            <div class="flex flex-col">
+              <label for="editRemarks" class="text-gray-700 text-sm font-medium"
+                >Remarks</label
+              >
+              <textarea
+                id="editRemarks"
+                name="remarks"
+                class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+                placeholder="Edit Remarks"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-end gap-4">
+              <button
+                type="button"
+                id="cancelEdit"
+                class="bg-gray-300 text-gray-700 rounded-md px-4 py-2 hover:bg-gray-400 transition"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                id="confirmEdit"
+                class="bg-primary-600 text-white rounded-md px-4 py-2 hover:bg-primary-700 transition"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <script type="module" src="../js/user-dashboard.js"></script>
+    <script type="module" src="../js/user-credentials.js"></script>
+    <script src="../js/user-functions.js"></script>
+    <script></script>
+  </body>
+</html>

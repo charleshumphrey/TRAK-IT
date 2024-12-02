@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css?family=Karla:400,700&display=swap");
+.font-family-karla {
+  font-family: karla;
+}
+.bg-sidebar {
+  background: #3d68ff;
+}
+.cta-btn {
+  color: #3d68ff;
+}
+.upgrade-btn {
+  background: #1947ee;
+}
+.upgrade-btn:hover {
+  background: #5bff5e;
+}
+.active-nav-link {
+  background: #80ff82;
+}
+.nav-item:hover {
+  background: #5bff5e;
+}
+.account-link:hover {
+  background: #5bff5e;
+}
+@media (max-width: 768px) {
+  #room-data-table thead {
+    display: none;
+  }
+
+  #room-data-table tbody,
+  #room-data-table tr,
+  #room-data-table td {
+    display: block;
+    width: 100%;
+  }
+
+  #room-data-table tbody td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  #room-data-table tbody td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #6c757d;
+  }
+}
+.rotate-180 {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease-in-out;
+}

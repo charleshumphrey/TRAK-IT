@@ -1,0 +1,15 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^3.4.15"
+  },
+  "scripts": {
+    "build": "npx tailwindcss -i ./src/css/input.css -o ./src/css/output.css --watch"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "firebase": "^11.0.2",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "xlsx": "^0.18.5"
+  }
+}

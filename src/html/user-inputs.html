@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TRAK-IT</title>
+    <link rel="stylesheet" href="../css/output.css" />
+    <link rel="stylesheet" href="../css/table.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 font-sans text-gray-800">
+    <header class="bg-white shadow-lg mb-8">
+      <div
+        class="container mx-auto px-6 py-6 flex justify-between items-center relative"
+      >
+        <h2 class="text-3xl font-semibold text-primary-700"></h2>
+        <div class="relative">
+          <div
+            id="name-container"
+            class="flex items-center space-x-2 text-lg font-medium text-gray-600 cursor-pointer hover:text-primary-700"
+            onclick="toggleMenu()"
+          >
+            <span class=""> <p id="name"></p></span>
+
+            <i class="fas fa-chevron-down"></i>
+          </div>
+
+          <div
+            id="menu"
+            class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-48 hidden z-50"
+          >
+            <ul class="py-2 text-sm text-gray-700">
+              <li>
+                <a
+                  href="#"
+                  class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                >
+                  <i class="fas fa-key mr-2"></i> Change Password
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                  onclick="logout()"
+                >
+                  <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container mx-auto mt-8 px-6">
+      <section class="mb-8">
+        <div
+          class="flex justify-between items-center bg-white p-8 rounded-lg shadow-lg transition transform hover:shadow-xl flex-col md:flex-row md:gap-0 gap-4"
+        >
+          <h2 class="font-semibold text-gray-800 tracking-wide text-2xl">
+            Add Room Data
+          </h2>
+
+          <a
+            href="./user-dashboard.html"
+            class="inline-block bg-primary-600 text-white text-lg px-8 py-4 rounded-lg shadow-md hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 transition duration-200 ease-in-out transform hover:scale-105"
+          >
+            Dashboard
+          </a>
+        </div>
+      </section>
+
+      <section class="bg-white p-8 rounded-lg shadow-lg">
+        <div class="mb-6">
+          <h3 class="text-xl font-semibold text-gray-700">Room Data Entry</h3>
+          <p class="text-gray-500 text-sm">
+            Enter the room-related data below:
+          </p>
+        </div>
+
+        <form id="roomDataForm" class="space-y-6">
+          <!-- Article -->
+          <div class="flex flex-col">
+            <label for="article" class="text-gray-700 text-sm font-medium"
+              >Article</label
+            >
+            <input
+              type="text"
+              id="article"
+              name="article"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Article"
+            />
+          </div>
+
+          <!-- Description -->
+          <div class="flex flex-col">
+            <label for="description" class="text-gray-700 text-sm font-medium"
+              >Description</label
+            >
+            <input
+              type="text"
+              id="description"
+              name="description"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Description"
+            />
+          </div>
+
+          <!-- Stock Number -->
+          <div class="flex flex-col">
+            <label for="stockNumber" class="text-gray-700 text-sm font-medium"
+              >Stock Number</label
+            >
+            <input
+              type="text"
+              id="stockNumber"
+              name="stockNumber"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Stock Number"
+            />
+          </div>
+
+          <!-- Serial Number -->
+          <div class="flex flex-col">
+            <label for="SerialNumber" class="text-gray-700 text-sm font-medium"
+              >Serial Number</label
+            >
+            <input
+              type="text"
+              id="SerialNumber"
+              name="SerialNumber"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Serial Number"
+            />
+          </div>
+
+          <!-- Model -->
+          <div class="flex flex-col">
+            <label for="model" class="text-gray-700 text-sm font-medium"
+              >Model</label
+            >
+            <input
+              type="text"
+              id="model"
+              name="model"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Model"
+            />
+          </div>
+
+          <!-- Unit of Measure -->
+          <div class="flex flex-col">
+            <label for="unitOfMeasure" class="text-gray-700 text-sm font-medium"
+              >Unit of Measure</label
+            >
+            <input
+              type="text"
+              id="unitOfMeasure"
+              name="unitOfMeasure"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Unit of Measure"
+            />
+          </div>
+
+          <!-- Unit Value -->
+          <div class="flex flex-col">
+            <label for="unitValue" class="text-gray-700 text-sm font-medium"
+              >Unit Value</label
+            >
+            <input
+              type="text"
+              id="unitValue"
+              name="unitValue"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Unit Value"
+            />
+          </div>
+
+          <!-- Balance Per Card -->
+          <div class="flex flex-col">
+            <label
+              for="balancePerCard"
+              class="text-gray-700 text-sm font-medium"
+              >Balance Per Card (Quantity)</label
+            >
+            <input
+              type="number"
+              id="balancePerCard"
+              name="balancePerCard"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Balance Per Card"
+            />
+          </div>
+
+          <!-- On Hand Per Count -->
+          <div class="flex flex-col">
+            <label
+              for="onHandPerCount"
+              class="text-gray-700 text-sm font-medium"
+              >On Hand Per Count (Quantity)</label
+            >
+            <input
+              type="number"
+              id="onHandPerCount"
+              name="onHandPerCount"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter On Hand Per Count"
+            />
+          </div>
+
+          <!-- Shortage Quantity -->
+          <div class="flex flex-col">
+            <label
+              for="shortageQuantity"
+              class="text-gray-700 text-sm font-medium"
+              >Shortage/Overage Quantity</label
+            >
+            <input
+              type="number"
+              id="shortageQuantity"
+              name="shortageQuantity"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Shortage Quantity"
+            />
+          </div>
+
+          <!-- Shortage Value -->
+          <div class="flex flex-col">
+            <label for="shortageValue" class="text-gray-700 text-sm font-medium"
+              >Shortage Value</label
+            >
+            <input
+              type="text"
+              id="shortageValue"
+              name="shortageValue"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Shortage Value"
+            />
+          </div>
+
+          <!-- Remarks -->
+          <div class="flex flex-col">
+            <label for="remarks" class="text-gray-700 text-sm font-medium"
+              >Remarks</label
+            >
+            <textarea
+              id="remarks"
+              name="remarks"
+              class="mt-2 p-3 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 transition duration-200"
+              placeholder="Enter Remarks"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="flex justify-center">
+            <button
+              type="submit"
+              class="w-full py-3 bg-primary-600 text-white rounded-md shadow-md hover:bg-primary-700 transition duration-200"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section
+        class="shadow-md rounded-sm p-3 absolute top-1 right-1 bg-white"
+      ></section>
+    </main>
+
+    <script type="module" src="../js/user-inputs.js"></script>
+    <script type="module" src="../js/user-credentials.js"></script>
+    <script src="../js/user-functions.js"></script>
+  </body>
+</html>
