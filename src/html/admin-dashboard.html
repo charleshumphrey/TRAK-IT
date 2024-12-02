@@ -93,23 +93,53 @@
           RCPPE
         </a>
       </nav>
-
-      <div class="absolute bottom-0 w-full">
-        <hr class="border-t border-gray-300" />
-        <button
-          id="logoutButton"
-          class="w-full text-center py-4 text-red-600 bg-white-100 hover:bg-red-200 font-semibold"
-        >
-          <i class="fas fa-sign-out-alt mr-2 text-red-600"></i> Logout
-        </button>
-      </div>
     </aside>
 
     <div class="w-full flex flex-col h-screen overflow-y-hidden">
       <!-- Desktop Header -->
       <header
         class="w-full items-center bg-white py-2 px-6 hidden sm:flex h-16"
-      ></header>
+      >
+        <div class="w-full flex justify-between">
+          <div></div>
+          <div class="relative">
+            <div
+              id="name-container"
+              onclick="toggleMenu()"
+              class="flex items-center space-x-2 text-lg font-medium text-gray-600 cursor-pointer hover:text-primary-700"
+            >
+              <span> <p id="name">Admin</p></span>
+
+              <i class="fas fa-chevron-down"></i>
+            </div>
+
+            <div
+              id="menu"
+              class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-48 hidden z-50"
+            >
+              <ul class="py-2 text-sm text-gray-700">
+                <li>
+                  <a
+                    href="admin-changepass.html"
+                    class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                  >
+                    <i class="fas fa-key mr-2"></i> Change Password
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                    onclick="logout()"
+                  >
+                    <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
 
       <!-- Mobile Header & Nav -->
       <header
@@ -275,6 +305,7 @@
     ></script>
 
     <script type="module" src="../js/admin-dashboard.js"></script>
+    <script src="../js/admin-credentials.js"></script>
     <script src="../js/admin-functions.js"></script>
   </body>
 </html>

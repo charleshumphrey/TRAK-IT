@@ -231,23 +231,23 @@
       <div class="w-full overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow">
           <h1 class="text-3xl text-black p-6 font-bold text-gray-600">
-            Asset Registry > Building & Structures
+            Asset Registry > Land
           </h1>
 
           <div class="p-3">
             <div class="w-full bg-white shadow-sm flex justify-between">
               <h1 class="text-3xl text-black p-5 font-semibold text-gray-500">
-                Buildings and Structures
+                Land
               </h1>
               <div class="flex items-center gap-2 p-2">
                 <a
-                  href="admin-ar-buildings-inputs.html"
+                  href="admin-ar-land-inputs.html"
                   class="bg-blue-500 text-white font-semibold rounded-md p-3 hover:bg-blue-400 shadow-md"
                 >
                   Add Data</a
                 >
                 <button
-                  id="generateassetBuildings"
+                  id="generateassetLand"
                   class="bg-primary-500 text-white font-semibold rounded-md p-3 hover:bg-primary-400 shadow-md"
                 >
                   Generate Asset Registry
@@ -311,6 +311,16 @@
                       class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
                     >
                       Specification
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Property Number
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Current Condition
                     </th>
                     <th
                       class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
@@ -505,11 +515,11 @@
                   Transportation and Equipment
                 </option>
                 <option value="Furniture Fixtures and Books">
-                  Furniture Fixtures and Books
+                  Furniture, Fixtures, and Books
                 </option>
                 <option value="Heritage Assets">Heritage Assets</option>
                 <option value="Other Property Plant and Equipment">
-                  Other Property Plant and Equipment
+                  Other Property, Plant, and Equipment
                 </option>
               </select>
             </div>
@@ -630,6 +640,51 @@
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
                   />
                 </div>
+
+                <!-- Property Number -->
+                <div>
+                  <label
+                    for="propertyNumber"
+                    class="block text-sm font-bold text-gray-700"
+                    >Property Number</label
+                  >
+                  <input
+                    type="text"
+                    id="propertyNumber"
+                    name="propertyNumber"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  />
+                </div>
+
+                <!-- Current Condition -->
+                <div>
+                  <label
+                    for="currentCondition"
+                    class="block text-sm font-bold text-gray-700"
+                    >Current Condition</label
+                  >
+                  <select
+                    id="currentCondition"
+                    name="currentCondition"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  >
+                    <option value="">Select Current Condition</option>
+                    <option value="Operational and in good condition">
+                      Operational and in good condition
+                    </option>
+                    <option value="Operational but needs repair">
+                      Operational but needs repair
+                    </option>
+                    <option value="Not working but repairable">
+                      Not working but repairable
+                    </option>
+                    <option value="Beyond economic repair">
+                      Beyond economic repair
+                    </option>
+                    <option value="Not Applicable">Not Applicable</option>
+                  </select>
+                </div>
+
                 <!-- Source of Fund -->
                 <div>
                   <label
@@ -789,7 +844,7 @@
     ></script>
 
     <script type="module" src="../js/admin-generate.js"></script>
-    <script type="module" src="../js/asset-buildings.js"></script>
+    <script type="module" src="../js/asset-land.js"></script>
     <script src="../js/admin-functions.js"></script>
   </body>
 </html>

@@ -22,16 +22,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("name").innerText = `${name}`;
 
-    // Fetch room data from Firebase
     const fetchRoomName = async () => {
       try {
-        // Reference specific room using roomId
         const roomRef = ref(db, `rooms/${roomId}`);
         const snapshot = await get(roomRef);
 
         if (snapshot.exists()) {
           const roomData = snapshot.val();
-          // Display the roomName for the given roomId
+
           document.getElementById("roomName").innerText = roomData.roomName;
         } else {
           document.getElementById("roomName").innerText = "Room not found.";

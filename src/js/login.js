@@ -12,7 +12,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 async function login(event) {
-  event.preventDefault(); // Prevent form submission
+  event.preventDefault();
 
   const name = document.getElementById("name").value;
   const password = document.getElementById("password").value;
@@ -23,25 +23,24 @@ async function login(event) {
     const usersRef = ref(db, "users");
     const snapshot = await get(usersRef);
 
-    let userFound = false; // Flag to track if user is found
-    let passwordCorrect = false; // Flag to track if password is correct
+    let userFound = false;
+    let passwordCorrect = false;
 
     if (snapshot.exists()) {
       snapshot.forEach((userSnapshot) => {
         const userData = userSnapshot.val();
 
         if (userData.name === name) {
-          userFound = true; // User name found
+          userFound = true;
           if (userData.password === password) {
-            passwordCorrect = true; // Password is correct
-            // Set session data in localStorage
+            passwordCorrect = true;
+
             localStorage.setItem("name", userData.name);
             localStorage.setItem("type", userData.type);
-            // localStorage.setItem("roomName", userData.roomName);
+
             localStorage.setItem("roomId", userData.roomId);
             localStorage.setItem("isLoggedIn", true);
 
-            // Redirect based on user type
             if (userData.type === "admin") {
               window.location.href = "src/html/admin-dashboard.html";
             } else if (userData.type === "user") {
