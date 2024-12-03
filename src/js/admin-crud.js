@@ -179,3 +179,40 @@ try {
         });
     });
 } catch {}
+
+// ADDING DATA TO RCPPE
+try {
+  document
+    .getElementById("assetFormRCPPE")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const assetData = {
+        article: document.getElementById("article").value,
+        description: document.getElementById("description").value,
+        propertyNo: document.getElementById("propertyNo").value,
+        unitOfMeasure: document.getElementById("unitOfMeasure").value,
+        unitValue: document.getElementById("unitValue").value,
+        quantityPerCard: document.getElementById("quantityPerCard").value,
+        quantityPerCount: document.getElementById("quantityPerCount").value,
+        shortageOverageQuantity: document.getElementById(
+          "shortageOverageQuantity"
+        ).value,
+        shortageOverageValue: document.getElementById("shortageOverageValue")
+          .value,
+        remarks: document.getElementById("remarks").value,
+      };
+
+      const assetDataRef = push(ref(db, `rcppe/`));
+
+      set(assetDataRef, assetData)
+        .then(() => {
+          alert("Data saved successfully!");
+          window.location.href = "admin-rcppe.html";
+        })
+        .catch((error) => {
+          console.error("Error saving data:", error);
+          alert("Error saving data: " + error.message);
+        });
+    });
+} catch {}

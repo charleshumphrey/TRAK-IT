@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <meta name="author" content="David Grzyb" />
+    <meta name="description" content="" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link rel="stylesheet" href="../css/output.css" />
+  </head>
+  <body class="bg-gray-100 font-family-karla flex">
+    <aside class="relative bg-white h-screen w-96 hidden sm:block shadow-xl">
+      <div class="p-6 bg-primary-500">
+        <a
+          href="admin-dashboard.html"
+          class="text-white text-3xl font-semibold uppercase hover:text-gray-300 flex items-center"
+        >
+          <img
+            class="w-16 h-16 mr-5 rounded-full"
+            src="../../assets/img/logo.jpg"
+            alt="logo"
+          />
+          Admin
+        </a>
+      </div>
+      <nav class="text-white text-base font-semibold pt-3">
+        <a
+          href="admin-dashboard.html"
+          class="flex items-center text-gray-800 py-4 pl-6 nav-item"
+        >
+          <i class="fas fa-tachometer-alt mr-3"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-item">
+          <button
+            id="asset-registry-toggle"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-4 pl-6 w-full focus:outline-none"
+          >
+            <i class="fas fa-sticky-note mr-3"></i>
+            Asset Registry
+            <i class="fas fa-chevron-down ml-auto mr-2"></i>
+          </button>
+
+          <div id="asset-registry-menu" class="hidden">
+            <a
+              href="admin-ar-buildings.html"
+              class="block flex items-center p-4 bg-gray-100 text-gray-800 hover:text-primary-500"
+            >
+              <i class="fas fa-building mr-3"></i>
+              Building and Structures
+            </a>
+            <hr />
+            <a
+              href="admin-land.html"
+              class="block flex items-center p-4 bg-gray-100 text-gray-800 hover:text-primary-500"
+            >
+              <i class="fas fa-tree mr-3"></i>
+              Land
+            </a>
+            <hr />
+            <a
+              href="admin-other-structure.html"
+              class="block flex items-center p-4 bg-gray-100 text-gray-800 hover:text-primary-500"
+            >
+              <i class="fas fa-warehouse mr-3"></i>
+              Other Structure
+            </a>
+            <hr />
+            <a
+              href="admin-semi-high-value.html"
+              class="block flex items-center p-4 bg-gray-100 text-gray-800 hover:text-primary-500"
+            >
+              <i class="fas fa-gem mr-3"></i>
+              Semi High Value
+            </a>
+          </div>
+        </div>
+
+        <a
+          href="admin-rcppe.html"
+          class="flex items-center active-nav-link text-gray-800 opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+        >
+          <i class="fas fa-table mr-3"></i>
+          RCPPE
+        </a>
+      </nav>
+    </aside>
+
+    <div class="w-full flex flex-col h-screen overflow-y-hidden">
+      <!-- Desktop Header -->
+      <header
+        class="w-full items-center bg-white py-2 px-6 hidden sm:flex h-16"
+      >
+        <div class="w-full flex justify-between">
+          <div></div>
+          <div class="relative">
+            <div
+              id="name-container"
+              onclick="toggleMenu()"
+              class="flex items-center space-x-2 text-lg font-extrabold text-gray-600 cursor-pointer hover:text-primary-600 bg-primary-100 p-2 rounded-md ring-1 ring-gray-400 hover:ring-2 hover:ring-primary-600 transition-all"
+            >
+              <p id="name">Admin</p>
+            </div>
+
+            <div
+              id="menu"
+              class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-48 z-50"
+            >
+              <ul class="py-2 text-sm text-gray-700">
+                <li>
+                  <a
+                    href="admin-changepass.html"
+                    class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                  >
+                    <i class="fas fa-key mr-2"></i> Change Password
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                    onclick="logout()"
+                  >
+                    <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Mobile Header & Nav -->
+      <header
+        x-data="{ isOpen: false }"
+        class="w-full bg-primary-400 py-5 px-6 sm:hidden"
+      >
+        <div class="flex items-center justify-between">
+          <a
+            href="index.html"
+            class="text-white text-3xl font-semibold uppercase hover:text-gray-300"
+            >Admin</a
+          >
+          <button
+            @click="isOpen = !isOpen"
+            class="text-white text-3xl focus:outline-none"
+          >
+            <i x-show="!isOpen" class="fas fa-bars"></i>
+            <i x-show="isOpen" class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Dropdown Nav -->
+        <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+          <a
+            href="index.html"
+            class="flex items-center active-nav-link text-gray-800 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+          </a>
+          <a
+            href="blank.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-sticky-note mr-3"></i>
+            Blank Page
+          </a>
+          <a
+            href="tables.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-table mr-3"></i>
+            Tables
+          </a>
+          <a
+            href="forms.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-align-left mr-3"></i>
+            Forms
+          </a>
+          <a
+            href="tabs.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-tablet-alt mr-3"></i>
+            Tabbed Content
+          </a>
+          <a
+            href="calendar.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-calendar mr-3"></i>
+            Calendar
+          </a>
+          <a
+            href="#"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-cogs mr-3"></i>
+            Support
+          </a>
+          <a
+            href="#"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-user mr-3"></i>
+            My Account
+          </a>
+          <a
+            href="#"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-sign-out-alt mr-3"></i>
+            Sign Out
+          </a>
+        </nav>
+      </header>
+
+      <div class="w-full overflow-x-hidden border-t flex flex-col">
+        <main class="w-full flex-grow">
+          <h1 class="text-3xl text-black p-6 font-bold text-gray-600">RCPPE</h1>
+
+          <div class="p-3">
+            <div class="w-full bg-white shadow-sm flex justify-between">
+              <h1 class="text-3xl text-black p-5 font-semibold text-gray-500">
+                RCPPE
+              </h1>
+              <div class="flex items-center gap-2 p-2">
+                <a
+                  href="admin-rcppe-inputs.html"
+                  class="bg-blue-500 text-white font-semibold rounded-md p-3 hover:bg-blue-400 shadow-md"
+                >
+                  Add Data</a
+                >
+                <button
+                  id="generateRCPPE"
+                  class="bg-primary-500 text-white font-semibold rounded-md p-3 hover:bg-primary-400 shadow-md"
+                >
+                  Generate RCPPE
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table
+                id="room-data-table"
+                class="min-w-full table-auto border-collapse cursor-pointer border border-gray-300 rounded-lg shadow-md"
+              >
+                <thead>
+                  <tr>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Article
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Description
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Property Number
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Unit Of Measure
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Unit Value
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Quantity per Property Card
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Quantity per Physical Count
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Shortage/Overage (Quantity)
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Shortage/Overage (Value)
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Remarks
+                    </th>
+                    <th
+                      class="px-6 py-4 border bg-primary-500 text-white text-center text-md"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+
+        <!-- <footer class="w-full bg-white text-right p-4">
+          Built by
+          <a target="_blank" href="https://davidgrzyb.com" class="underline"
+            >David Grzyb</a
+          >.
+        </footer> -->
+      </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div
+      id="deleteModal"
+      class="modal fixed inset-0 z-50 hidden flex items-center justify-center"
+    >
+      <div
+        class="modal-background absolute inset-0 bg-gray-800 bg-opacity-50"
+      ></div>
+
+      <div
+        class="modal-card absolute bg-white rounded-lg shadow-lg w-11/12 max-w-lg overflow-hidden"
+      >
+        <!-- Header -->
+        <header
+          class="modal-card-head flex items-center p-4 border-b border-gray-200"
+        >
+          <i class="mdi mdi-trash-can-outline text-red-500 text-2xl mr-3"></i>
+          <p class="modal-card-title text-xl font-semibold text-black">
+            Confirm <span class="text-red-500">Deletion</span>
+          </p>
+        </header>
+        <!-- Body -->
+        <section class="modal-card-body p-6 text-gray-700">
+          <p>
+            Are you sure you want to
+            <span class="text-red-500">delete</span> this item? Once deleted,
+            this action <strong>cannot be undone</strong>.
+          </p>
+        </section>
+        <!-- Buttons -->
+        <footer
+          class="modal-card-foot flex justify-end items-center p-4 bg-gray-100 border-t border-gray-200"
+        >
+          <button
+            id="cancelDelete"
+            class="button bg-gray-300 text-gray-700 rounded-md px-4 py-2 hover:bg-gray-400 transition"
+          >
+            Cancel
+          </button>
+          <button
+            id="confirmDelete"
+            class="button bg-red-500 text-white rounded-md px-4 py-2 ml-3 hover:bg-red-600 transition"
+          >
+            Confirm
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div
+      id="editModal"
+      class="modal fixed inset-0 z-50 hidden flex items-center justify-center"
+    >
+      <div
+        class="modal-background absolute inset-0 bg-gray-800 bg-opacity-50"
+      ></div>
+
+      <div
+        class="modal-card relative bg-white rounded-lg shadow-lg w-11/12 max-w-2xl overflow-auto"
+        style="max-height: 90vh"
+      >
+        <header
+          class="modal-card-head flex items-center p-4 border-b border-gray-200"
+        >
+          <i class="mdi mdi-pencil-outline text-primary-500 text-2xl mr-3"></i>
+          <p class="modal-card-title text-xl font-semibold text-black">
+            Edit Data
+          </p>
+        </header>
+
+        <section class="modal-card-body p-6 max-h-[70vh] overflow-y-auto">
+          <form id="editForm" class="space-y-6">
+            <!-- Article -->
+            <div>
+              <label for="article" class="block text-sm font-bold text-gray-700"
+                >Article</label
+              >
+              <input
+                type="text"
+                id="article"
+                name="article"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              />
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label
+                for="description"
+                class="block text-sm font-bold text-gray-700"
+                >Description</label
+              >
+              <textarea
+                id="description"
+                name="description"
+                rows="3"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              ></textarea>
+            </div>
+
+            <!-- Property Number -->
+            <div>
+              <label
+                for="propertyNo"
+                class="block text-sm font-bold text-gray-700"
+                >Property Number</label
+              >
+              <input
+                type="text"
+                id="propertyNo"
+                name="propertyNo"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              />
+            </div>
+
+            <!-- Unit of Measure -->
+            <div>
+              <label
+                for="unitOfMeasure"
+                class="block text-sm font-bold text-gray-700"
+                >Unit of Measure</label
+              >
+              <input
+                type="text"
+                id="unitOfMeasure"
+                name="unitOfMeasure"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              />
+            </div>
+
+            <!-- Unit Value -->
+            <div>
+              <label
+                for="unitValue"
+                class="block text-sm font-bold text-gray-700"
+                >Unit Value</label
+              >
+              <input
+                type="text"
+                id="unitValue"
+                name="unitValue"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              />
+            </div>
+
+            <!-- Quantity Per Property Card -->
+            <div>
+              <label
+                for="quantityPerCard"
+                class="block text-sm font-bold text-gray-700"
+                >Quantity Per Property Card</label
+              >
+              <input
+                type="number"
+                id="quantityPerCard"
+                name="quantityPerCard"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              />
+            </div>
+
+            <!-- Quantity Per Physical Count -->
+            <div>
+              <label
+                for="quantityPerCount"
+                class="block text-sm font-bold text-gray-700"
+                >Quantity Per Physical Count</label
+              >
+              <input
+                type="number"
+                id="quantityPerCount"
+                name="quantityPerCount"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              />
+            </div>
+
+            <!-- Shortage/Overage Quantity -->
+            <div>
+              <label
+                for="shortageOverageQuantity"
+                class="block text-sm font-bold text-gray-700"
+                >Shortage/Overage (Quantity)</label
+              >
+              <input
+                type="number"
+                id="shortageOverageQuantity"
+                name="shortageOverageQuantity"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              />
+            </div>
+
+            <!-- Shortage/Overage Value -->
+            <div>
+              <label
+                for="shortageOverageValue"
+                class="block text-sm font-bold text-gray-700"
+                >Shortage/Overage (Value)</label
+              >
+              <input
+                type="text"
+                id="shortageOverageValue"
+                name="shortageOverageValue"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              />
+            </div>
+
+            <!-- REMARKS -->
+            <div>
+              <label for="remarks" class="block text-sm font-bold text-gray-700"
+                >Remarks</label
+              >
+              <textarea
+                id="remarks"
+                name="remarks"
+                rows="3"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-primary-600 text-white py-3 px-5 rounded-md shadow-sm hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <!-- SheetJS -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
+    <!-- AlpineJS -->
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      defer
+    ></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+      integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs="
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="module" src="../js/admin-generate.js"></script>
+    <script type="module" src="../js/admin-rcppe.js"></script>
+    <script src="../js/admin-functions.js"></script>
+  </body>
+</html>
