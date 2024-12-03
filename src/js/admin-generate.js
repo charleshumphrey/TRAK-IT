@@ -272,3 +272,228 @@ try {
     .getElementById("generateassetLand")
     .addEventListener("click", generateARland);
 } catch {}
+
+try {
+  function generateAROtherStructure() {
+    const assetRegistryRef = ref(db, "assetRegistry/otherStructure");
+
+    get(assetRegistryRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const workbook = new ExcelJS.Workbook();
+          const worksheet = workbook.addWorksheet("Asset Registry");
+
+          worksheet.getCell("G1").value = "Annex B";
+          worksheet.getCell("G1").alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell("G1").font = { bold: true, size: 13 };
+
+          worksheet.mergeCells("A3:G3");
+          worksheet.getCell("A3").value = "FE DEL MUNDO NATIONAL HIGH SCHOOL";
+          worksheet.getCell("A3").alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell("A3").font = { bold: true, size: 13 };
+
+          worksheet.mergeCells("A4:G4");
+          worksheet.getCell("A4").value = "List of PPEs Found at Station";
+          worksheet.getCell("A4").alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell("A4").font = { size: 13 };
+
+          worksheet.mergeCells("A7:I7");
+          worksheet.getCell("A7").value =
+            "PPE Account Group: _______________________________________";
+          worksheet.getCell("A7").alignment = { horizontal: "left" };
+          worksheet.getCell("A7").font = { bold: true, size: 13 };
+
+          const headers = [
+            "Article/Item",
+            "Description",
+            "New Property No. Assigned",
+            "Person Accountable",
+            "Unit Cost VALUE",
+            "Total Cost VALUE",
+            "Remarks",
+          ];
+
+          const headerRow = worksheet.addRow(headers);
+
+          headerRow.height = 50;
+
+          headerRow.eachCell((cell) => {
+            cell.font = { bold: true };
+            cell.alignment = {
+              horizontal: "center",
+              vertical: "middle",
+              wrapText: true,
+            };
+            cell.border = {
+              top: { style: "thin" },
+              left: { style: "thin" },
+              bottom: { style: "thin" },
+              right: { style: "thin" },
+            };
+          });
+
+          const currencyFormatter = new Intl.NumberFormat("en-US", {
+            style: "decimal",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+
+          Object.keys(data).forEach((assetId) => {
+            const asset = data[assetId];
+            const formattedUnitCost = asset.unitCostValue
+              ? currencyFormatter.format(asset.unitCostValue)
+              : "";
+            const formattedTotalCost = asset.totalCostValue
+              ? currencyFormatter.format(asset.totalCostValue)
+              : "";
+            const row = [
+              asset.articleItem || "",
+              asset.description || "",
+              asset.newpropertyNo || "",
+              asset.personAccountable || "",
+              formattedUnitCost,
+              formattedTotalCost || "",
+              asset.remarks || "",
+            ];
+            const dataRow = worksheet.addRow(row);
+
+            dataRow.eachCell((cell, colNumber) => {
+              cell.border = {
+                top: { style: "thin" },
+                left: { style: "thin" },
+                bottom: { style: "thin" },
+                right: { style: "thin" },
+              };
+              cell.alignment = { vertical: "middle" };
+
+              if (colNumber === 5 || colNumber === 6) {
+                cell.alignment = {
+                  vertical: "middle",
+                  horizontal: "right",
+                };
+              }
+            });
+          });
+
+          worksheet.columns.forEach((column, index) => {
+            let maxLength = 0;
+            column.eachCell({ includeEmpty: true }, (cell) => {
+              const columnLength = cell.value
+                ? cell.value.toString().length
+                : 0;
+              if (columnLength > maxLength) {
+                maxLength = columnLength;
+              }
+            });
+            column.width = maxLength + 2;
+          });
+
+          worksheet.addRow([]);
+          worksheet.addRow([]);
+
+          worksheet.addRow([]);
+
+          worksheet.getCell(`A${worksheet.lastRow.number}`).value =
+            "Prepared by:";
+
+          worksheet.getCell(`F${worksheet.lastRow.number}`).value =
+            "Reviewed by:";
+
+          worksheet.addRow([]);
+          worksheet.addRow([]);
+
+          worksheet.addRow([]);
+          worksheet.mergeCells(
+            `A${worksheet.lastRow.number}:B${worksheet.lastRow.number}`
+          );
+          worksheet.getCell(`A${worksheet.lastRow.number}`).value =
+            "DARCEL S. SOLANOY";
+          worksheet.getCell(`A${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell(`A${worksheet.lastRow.number}`).font = {
+            bold: true,
+            size: 11,
+            underline: true,
+          };
+
+          worksheet.getCell(`F${worksheet.lastRow.number}`).value =
+            "DBEDILLA B. ESTANDA";
+          worksheet.getCell(`F${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell(`F${worksheet.lastRow.number}`).font = {
+            bold: true,
+            size: 11,
+            underline: true,
+          };
+
+          worksheet.addRow([]);
+          worksheet.mergeCells(
+            `A${worksheet.lastRow.number}:B${worksheet.lastRow.number}`
+          );
+          worksheet.getCell(`A${worksheet.lastRow.number}`).value =
+            "Property Personnel";
+          worksheet.getCell(`A${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell(`A${worksheet.lastRow.number}`).font = { size: 11 };
+
+          worksheet.getCell(`F${worksheet.lastRow.number}`).value =
+            "Property Personnel";
+          worksheet.getCell(`F${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell(`F${worksheet.lastRow.number}`).font = { size: 11 };
+
+          worksheet.addRow([]);
+          worksheet.addRow([]);
+
+          worksheet.getCell(`A${worksheet.lastRow.number}`).value = "Date:";
+
+          workbook.xlsx
+            .writeBuffer()
+            .then((buffer) => {
+              const blob = new Blob([buffer], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              });
+              const url = window.URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = "Asset_Registry_Other_Structure.xlsx";
+              link.click();
+              window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+              console.error("Error creating Excel file:", error);
+            });
+        } else {
+          alert("No data available.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        alert("Error fetching data: " + error.message);
+      });
+  }
+
+  document
+    .getElementById("generateassetotherStructure")
+    .addEventListener("click", generateAROtherStructure);
+} catch (error) {
+  console.error("Unexpected error:", error);
+}

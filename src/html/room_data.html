@@ -96,33 +96,44 @@
 
     <div class="w-full flex flex-col h-screen overflow-y-hidden">
       <!-- Desktop Header -->
-      <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
-        <div class="w-1/2"></div>
-        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
-          <button
-            @click="isOpen = !isOpen"
-            class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none"
-          >
-            <img src="https://source.unsplash.com/uJ8LNVCBjFQ/400x400" />
-          </button>
-          <button
-            x-show="isOpen"
-            @click="isOpen = false"
-            class="h-full w-full fixed inset-0 cursor-default"
-          ></button>
-          <div
-            x-show="isOpen"
-            class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16"
-          >
-            <a href="#" class="block px-4 py-2 account-link hover:text-white"
-              >Account</a
+      <header
+        class="w-full items-center bg-white py-2 px-6 hidden sm:flex h-16"
+      >
+        <div class="w-full flex justify-between">
+          <div></div>
+          <div class="relative">
+            <div
+              id="name-container"
+              onclick="toggleMenu()"
+              class="flex items-center space-x-2 text-lg font-extrabold text-gray-600 cursor-pointer hover:text-primary-600 bg-primary-100 p-2 rounded-md ring-1 ring-gray-400 hover:ring-2 hover:ring-primary-600 transition-all"
             >
-            <a href="#" class="block px-4 py-2 account-link hover:text-white"
-              >Support</a
+              <p id="name">Admin</p>
+            </div>
+
+            <div
+              id="menu"
+              class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-48 z-50"
             >
-            <a href="#" class="block px-4 py-2 account-link hover:text-white"
-              >Sign Out</a
-            >
+              <ul class="py-2 text-sm text-gray-700">
+                <li>
+                  <a
+                    href="admin-changepass.html"
+                    class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                  >
+                    <i class="fas fa-key mr-2"></i> Change Password
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                    onclick="logout()"
+                  >
+                    <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </header>
