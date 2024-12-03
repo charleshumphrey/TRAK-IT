@@ -16,11 +16,11 @@ import { firebaseConfig } from "./firebaseConfig.js";
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-//DISPLAYING ASSET REGISTRY - BUILDINGS & STRUCTURES
+//DISPLAYING ASSET REGISTRY - LAND
 async function fetchAndDisplayData() {
   const tableBody = document.querySelector("#room-data-table tbody");
 
-  const assetRegistryRef = ref(db, "assetRegistry/buildings");
+  const assetRegistryRef = ref(db, "assetRegistry/semiHighValue");
   const orderedQuery = query(assetRegistryRef, orderByKey());
 
   try {
@@ -49,7 +49,10 @@ async function fetchAndDisplayData() {
           <td class="px-6 py-4 border">${asset.model || "-"}</td>
           <td class="px-6 py-4 border">${asset.serialNumber || "-"}</td>
           <td class="px-6 py-4 border">${asset.specification || "-"}</td>
+          <td class="px-6 py-4 border">${asset.propertyNumber || "-"}</td>
+          <td class="px-6 py-4 border">${asset.currentCondition || "-"}</td>
           <td class="px-6 py-4 border">${asset.sourceOfFund || "-"}</td>
+
           <td class="px-6 py-4 border">
           ${
             asset.costOfAcquisition
@@ -60,6 +63,7 @@ async function fetchAndDisplayData() {
               : "-"
           }
           </td>
+
           <td class="px-6 py-4 border">${asset.dateOfAcquisition || "-"}</td>
           <td class="px-6 py-4 border">${asset.totalLifeYears || "-"}</td>
           <td class="px-6 py-4 border">${asset.accountableOfficer || "-"}</td>
@@ -94,7 +98,7 @@ async function fetchAndDisplayData() {
     } else {
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td class="p-6 bg-gray-200 text-center font-bold border" colspan="18">No Data</td>`;
+        <td class="p-6 bg-gray-200 text-center font-bold border" colspan="20">No Data</td>`;
       tableBody.appendChild(row);
     }
   } catch (error) {
@@ -109,7 +113,7 @@ function handleEdit(event) {
   const itemId = event.target.getAttribute("data-id");
   const roomId = localStorage.getItem("roomId");
 
-  const itemRef = ref(db, `assetRegistry/buildings/${itemId}`);
+  const itemRef = ref(db, `assetRegistry/semiHighValue/${itemId}`);
   get(itemRef)
     .then((snapshot) => {
       if (snapshot.exists()) {
@@ -133,6 +137,10 @@ function handleEdit(event) {
           itemData.serialNumber || "";
         document.getElementById("specification").value =
           itemData.specification || "";
+        document.getElementById("propertyNumber").value =
+          itemData.propertyNumber || "";
+        document.getElementById("currentCondition").value =
+          itemData.currentCondition || "";
         document.getElementById("sourceOfFund").value =
           itemData.sourceOfFund || "";
 
@@ -167,6 +175,8 @@ function handleEdit(event) {
             model: document.getElementById("model").value,
             serialNumber: document.getElementById("serialNumber").value,
             specification: document.getElementById("specification").value,
+            propertyNumber: document.getElementById("propertyNumber").value,
+            currentCondition: document.getElementById("currentCondition").value,
             sourceOfFund: document.getElementById("sourceOfFund").value,
             costOfAcquisition:
               document.getElementById("costOfAcquisition").value,
@@ -215,7 +225,7 @@ function handleDelete(event) {
 
   confirmButton.onclick = async () => {
     try {
-      await remove(ref(db, `assetRegistry/buildings/${itemId}`));
+      await remove(ref(db, `assetRegistry/semiHighValue/${itemId}`));
       alert("Item deleted successfully.");
       modal.style.display = "none";
       location.reload();
@@ -223,7 +233,7 @@ function handleDelete(event) {
       console.error("Error deleting data:", error);
       alert("An error occurred while deleting the item.");
       console.log("Item ID:", itemId);
-      console.log("Firebase Path:", `assetRegistry/buildings/${itemId}`);
+      console.log("Firebase Path:", `assetRegistry/semiHighValue/${itemId}`);
     }
   };
 

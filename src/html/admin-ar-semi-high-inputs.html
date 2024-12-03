@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <meta name="author" content="David Grzyb" />
+    <meta name="description" content="" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link rel="stylesheet" href="../css/output.css" />
+  </head>
+  <body class="bg-gray-100 font-family-karla flex">
+    <aside class="relative bg-white h-screen w-96 hidden sm:block shadow-xl">
+      <div class="p-6 bg-primary-500">
+        <a
+          href="admin-dashboard.html"
+          class="text-white text-3xl font-semibold uppercase hover:text-gray-300 flex items-center"
+        >
+          <img
+            class="w-16 h-16 mr-5 rounded-full"
+            src="../../assets/img/logo.jpg"
+            alt="logo"
+          />
+          Admin
+        </a>
+      </div>
+      <nav class="text-white text-base font-semibold pt-3">
+        <a
+          href="admin-dashboard.html"
+          class="flex items-center text-gray-800 py-4 pl-6 nav-item"
+        >
+          <i class="fas fa-tachometer-alt mr-3"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-item">
+          <button
+            id="asset-registry-toggle"
+            class="flex items-center text-gray-800 active-nav-link opacity-75 hover:opacity-100 py-4 pl-6 w-full focus:outline-none"
+          >
+            <i class="fas fa-sticky-note mr-3"></i>
+            Asset Registry
+            <i class="fas fa-chevron-down ml-auto mr-2"></i>
+          </button>
+
+          <div id="asset-registry-menu" class="hidden">
+            <a
+              href="admin-ar-buildings.html"
+              class="block flex items-center p-4 bg-gray-100 text-gray-800 hover:text-primary-500"
+            >
+              <i class="fas fa-building mr-3"></i>
+              Building and Structures
+            </a>
+            <hr />
+            <a
+              href="admin-land.html"
+              class="block flex items-center p-4 bg-gray-100 text-gray-800 hover:text-primary-500"
+            >
+              <i class="fas fa-tree mr-3"></i>
+              Land
+            </a>
+            <hr />
+            <a
+              href="admin-other-structure.html"
+              class="block flex items-center p-4 bg-gray-100 text-gray-800 hover:text-primary-500"
+            >
+              <i class="fas fa-warehouse mr-3"></i>
+              Other Structure
+            </a>
+            <hr />
+            <a
+              href="admin-semi-high-value.html"
+              class="block flex items-center p-4 bg-gray-100 text-gray-800 hover:text-primary-500"
+            >
+              <i class="fas fa-gem mr-3"></i>
+              Semi High Value
+            </a>
+          </div>
+        </div>
+
+        <a
+          href="admin-rcppe.html"
+          class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+        >
+          <i class="fas fa-table mr-3"></i>
+          RCPPE
+        </a>
+      </nav>
+    </aside>
+
+    <div class="w-full flex flex-col h-screen overflow-y-hidden">
+      <!-- Desktop Header -->
+      <header
+        class="w-full items-center bg-white py-2 px-6 hidden sm:flex h-16"
+      >
+        <div class="w-full flex justify-between">
+          <div></div>
+          <div class="relative">
+            <div
+              id="name-container"
+              onclick="toggleMenu()"
+              class="flex items-center space-x-2 text-lg font-extrabold text-gray-600 cursor-pointer hover:text-primary-600 bg-primary-100 p-2 rounded-md ring-1 ring-gray-400 hover:ring-2 hover:ring-primary-600 transition-all"
+            >
+              <p id="name">Admin</p>
+            </div>
+
+            <div
+              id="menu"
+              class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-48 z-50"
+            >
+              <ul class="py-2 text-sm text-gray-700">
+                <li>
+                  <a
+                    href="admin-changepass.html"
+                    class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                  >
+                    <i class="fas fa-key mr-2"></i> Change Password
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 hover:bg-primary-100 hover:text-primary-700"
+                    onclick="logout()"
+                  >
+                    <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Mobile Header & Nav -->
+      <header
+        x-data="{ isOpen: false }"
+        class="w-full bg-primary-400 py-5 px-6 sm:hidden"
+      >
+        <div class="flex items-center justify-between">
+          <a
+            href="index.html"
+            class="text-white text-3xl font-semibold uppercase hover:text-gray-300"
+            >Admin</a
+          >
+          <button
+            @click="isOpen = !isOpen"
+            class="text-white text-3xl focus:outline-none"
+          >
+            <i x-show="!isOpen" class="fas fa-bars"></i>
+            <i x-show="isOpen" class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Dropdown Nav -->
+        <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+          <a
+            href="index.html"
+            class="flex items-center active-nav-link text-gray-800 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+          </a>
+          <a
+            href="blank.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-sticky-note mr-3"></i>
+            Blank Page
+          </a>
+          <a
+            href="tables.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-table mr-3"></i>
+            Tables
+          </a>
+          <a
+            href="forms.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-align-left mr-3"></i>
+            Forms
+          </a>
+          <a
+            href="tabs.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-tablet-alt mr-3"></i>
+            Tabbed Content
+          </a>
+          <a
+            href="calendar.html"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-calendar mr-3"></i>
+            Calendar
+          </a>
+          <a
+            href="#"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-cogs mr-3"></i>
+            Support
+          </a>
+          <a
+            href="#"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-user mr-3"></i>
+            My Account
+          </a>
+          <a
+            href="#"
+            class="flex items-center text-gray-800 opacity-75 hover:opacity-100 py-2 pl-4 nav-item"
+          >
+            <i class="fas fa-sign-out-alt mr-3"></i>
+            Sign Out
+          </a>
+        </nav>
+      </header>
+
+      <div class="w-full overflow-x-hidden border-t flex flex-col">
+        <main class="w-full flex-grow">
+          <h1
+            class="text-md lg:text-2xl text-black p-6 font-bold text-gray-600"
+          >
+            Asset Registry > Semi High Value > Add Data
+          </h1>
+
+          <div class="p-3">
+            <div class="w-full bg-white shadow-sm flex justify-between">
+              <h1 class="text-3xl text-black p-5 font-semibold text-gray-500">
+                Add Data
+              </h1>
+              <div class="flex items-center gap-2 p-2">
+                <a
+                  href="admin-semi-high-value.html"
+                  class="bg-blue-500 text-white font-semibold rounded-md p-3 px-5 hover:bg-blue-400 shadow-md"
+                >
+                  Back</a
+                >
+              </div>
+            </div>
+
+            <div class="w-full bg-white shadow-md rounded-lg p-6 mt-3">
+              <h2 class="text-2xl font-bold mb-6 text-gray-800">
+                Asset Registration
+              </h2>
+              <form id="assetFormSemiHighValue" class="space-y-6">
+                <!-- Office Type -->
+                <div>
+                  <label
+                    for="officeType"
+                    class="block text-sm font-bold text-gray-700"
+                    >Office Type</label
+                  >
+                  <select
+                    id="officeType"
+                    name="officeType"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  >
+                    <option value="">Select Office Type</option>
+                    <option value="IU">IU</option>
+                    <option value="CO">CO</option>
+                    <option value="RO">RO</option>
+                    <option value="DO">DO</option>
+                  </select>
+                </div>
+
+                <!-- Regional Office/Division Office -->
+                <div>
+                  <label
+                    for="regionalDivisionOffice"
+                    class="block text-sm font-bold text-gray-700"
+                    >Regional Office/Division Office</label
+                  >
+                  <input
+                    type="text"
+                    id="regionalDivisionOffice"
+                    readonly
+                    value="Oriental Mindoro"
+                    name="regionalDivisionOffice"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  />
+                </div>
+
+                <!-- Asset Classification -->
+                <div>
+                  <label
+                    for="assetClassification"
+                    class="block text-sm font-bold text-gray-700"
+                    >Asset Classification</label
+                  >
+                  <select
+                    id="assetClassification"
+                    name="assetClassification"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  >
+                    <option value="">Select Asset Classification</option>
+                    <option value="Land">Land</option>
+                    <option value="Land Improvements">Land Improvements</option>
+                    <option value="Infrastructure Assets">
+                      Infrastructure Assets
+                    </option>
+                    <option value="Building Structures">
+                      Building Structures
+                    </option>
+                    <option value="Machinery and Equipment">
+                      Machinery and Equipment
+                    </option>
+                    <option value="Transportation and Equipment">
+                      Transportation and Equipment
+                    </option>
+                    <option value="Furniture Fixtures and Books">
+                      Furniture, Fixtures, and Books
+                    </option>
+                    <option value="Heritage Assets">Heritage Assets</option>
+                    <option value="Other Property Plant and Equipment">
+                      Other Property, Plant, and Equipment
+                    </option>
+                  </select>
+                </div>
+
+                <!-- Asset Sub Class -->
+                <div>
+                  <label
+                    for="assetSubClass"
+                    class="block text-sm font-bold text-gray-700"
+                    >Asset Sub Class</label
+                  >
+                  <select
+                    id="assetSubClass"
+                    name="assetSubClass"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  >
+                    <option value="">Select Asset Sub Class</option>
+                    <option value="Machinery">Machinery</option>
+                    <option value="Office Equipment">Office Equipment</option>
+                    <option
+                      value="Information and Communication Technology Equipment"
+                    >
+                      Information and Communication Technology Equipment
+                    </option>
+                    <option value="Agricultural and Forestry Equipment">
+                      Agricultural and Forestry Equipment
+                    </option>
+                    <option value="Marine and Fishery Equipment">
+                      Marine and Fishery Equipment
+                    </option>
+                    <option value="Airport Equipment">Airport Equipment</option>
+                    <option value="Communication Equipment">
+                      Communication Equipment
+                    </option>
+                    <option value="Construction and Heavy Equipment">
+                      Construction and Heavy Equipment
+                    </option>
+                    <option value="Disaster Response and Rescue Equipment">
+                      Disaster Response and Rescue Equipment
+                    </option>
+                    <option value="Military, Police and Security Equipment">
+                      Military, Police and Security Equipment
+                    </option>
+                    <option value="Medical Equipment">Medical Equipment</option>
+                    <option value="Printing Equipment">
+                      Printing Equipment
+                    </option>
+                    <option value="Sports Equipment">Sports Equipment</option>
+                    <option value="Technical and Scientific Equipment">
+                      Technical and Scientific Equipment
+                    </option>
+                    <option value="Other Machinery and Equipment">
+                      Other Machinery and Equipment
+                    </option>
+                  </select>
+                </div>
+
+                <!-- UACS Object Code -->
+                <div>
+                  <label
+                    for="uacsObjectCode"
+                    class="block text-sm font-bold text-gray-700"
+                    >UACS Object Code</label
+                  >
+                  <input
+                    type="text"
+                    id="uacsObjectCode"
+                    name="uacsObjectCode"
+                    readonly
+                    value="1060101000
+                    "
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  />
+                </div>
+
+                <!-- Grouping Asset Details -->
+                <fieldset class="border border-gray-300 rounded-md p-4">
+                  <legend class="text-sm font-bold text-gray-700">
+                    Asset Details
+                  </legend>
+
+                  <!-- Asset Item -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        for="assetItem"
+                        class="block text-sm font-bold text-gray-700"
+                        >Asset Item</label
+                      >
+                      <input
+                        type="text"
+                        id="assetItem"
+                        name="assetItem"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                      />
+                    </div>
+
+                    <!-- Manufacturer -->
+                    <div>
+                      <label
+                        for="manufacturer"
+                        class="block text-sm font-bold text-gray-700"
+                        >Manufacturer</label
+                      >
+                      <input
+                        type="text"
+                        id="manufacturer"
+                        name="manufacturer"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                      />
+                    </div>
+
+                    <!-- Model -->
+                    <div>
+                      <label
+                        for="model"
+                        class="block text-sm font-bold text-gray-700"
+                        >Model</label
+                      >
+                      <input
+                        type="text"
+                        id="model"
+                        name="model"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                      />
+                    </div>
+
+                    <!-- Serial Number -->
+                    <div>
+                      <label
+                        for="serialNumber"
+                        class="block text-sm font-bold text-gray-700"
+                        >Serial Number</label
+                      >
+                      <input
+                        type="text"
+                        id="serialNumber"
+                        name="serialNumber"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                      />
+                    </div>
+
+                    <!-- Specification -->
+                    <div>
+                      <label
+                        for="specification"
+                        class="block text-sm font-bold text-gray-700"
+                        >Specification</label
+                      >
+                      <input
+                        type="text"
+                        id="specification"
+                        name="specification"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                      />
+                    </div>
+
+                    <!-- Property Number -->
+                    <div>
+                      <label
+                        for="propertyNumber"
+                        class="block text-sm font-bold text-gray-700"
+                        >Property Number</label
+                      >
+                      <input
+                        type="text"
+                        id="propertyNumber"
+                        name="propertyNumber"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                      />
+                    </div>
+
+                    <!-- Current Condition -->
+                    <div>
+                      <label
+                        for="currentCondition"
+                        class="block text-sm font-bold text-gray-700"
+                        >Current Condition</label
+                      >
+                      <select
+                        id="currentCondition"
+                        name="currentCondition"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                      >
+                        <option value="">Select Current Condition</option>
+                        <option value="Operational and in good condition">
+                          Operational and in good condition
+                        </option>
+                        <option value="Operational but needs repair">
+                          Operational but needs repair
+                        </option>
+                        <option value="Not working but repairable">
+                          Not working but repairable
+                        </option>
+                        <option value="Beyond economic repair">
+                          Beyond economic repair
+                        </option>
+                        <option value="Not Applicable">Not Applicable</option>
+                      </select>
+                    </div>
+
+                    <!-- Source of Fund -->
+                    <div>
+                      <label
+                        for="sourceOfFund"
+                        class="block text-sm font-bold text-gray-700"
+                        >Source of Fund</label
+                      >
+                      <select
+                        id="sourceOfFund"
+                        name="sourceOfFund"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                      >
+                        <option value="">Select Source of Fund</option>
+                        <option value="DepED Central Office">
+                          DepED Central Office
+                        </option>
+                        <option value="DepED Regional Office">
+                          DepED Regional Office
+                        </option>
+                        <option value="DepED Division Office">
+                          DepED Division Office
+                        </option>
+                        <option value="DepED Implementing Unit">
+                          DepED Implementing Unit
+                        </option>
+                        <option value="Donated by LGU">Donated by LGU</option>
+                        <option value="Donated by Other Entity">
+                          Donated by Other Entity
+                        </option>
+                        <option value="Asset is Owned by LGU">
+                          Asset is Owned by LGU
+                        </option>
+                        <option value="Asset is Owned by Other Entity">
+                          Asset is Owned by Other Entity
+                        </option>
+                        <option value="Asset is Leased">Asset is Leased</option>
+                      </select>
+                    </div>
+                  </div>
+                </fieldset>
+
+                <!-- Additional Inputs Next to Cost of Acquisition -->
+
+                <div>
+                  <label
+                    for="costOfAcquisition"
+                    class="block text-sm font-bold text-gray-700"
+                    >Cost of Acquisition</label
+                  >
+                  <input
+                    type="text"
+                    id="costOfAcquisition"
+                    name="costOfAcquisition"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="dateOfAcquisition"
+                    class="block text-sm font-bold text-gray-700"
+                    >Date of Acquisition</label
+                  >
+                  <input
+                    type="text"
+                    id="dateOfAcquisition"
+                    name="dateOfAcquisition"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="totalLifeYears"
+                    class="block text-sm font-bold text-gray-700"
+                    >Estimated Total Life Years</label
+                  >
+                  <input
+                    type="number"
+                    id="totalLifeYears"
+                    name="totalLifeYears"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="accountableOfficer"
+                    class="block text-sm font-bold text-gray-700"
+                    >Name of Accountable Officer</label
+                  >
+                  <input
+                    type="text"
+                    id="accountableOfficer"
+                    name="accountableOfficer"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="assetLocation"
+                    class="block text-sm font-bold text-gray-700"
+                    >Asset Location</label
+                  >
+                  <input
+                    type="text"
+                    id="assetLocation"
+                    name="assetLocation"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="remarks"
+                    class="block text-sm font-bold text-gray-700"
+                    >Remarks</label
+                  >
+                  <textarea
+                    id="remarks"
+                    name="remarks"
+                    rows="3"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-500 p-3"
+                  ></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-end">
+                  <button
+                    type="submit"
+                    class="bg-primary-600 text-white py-3 px-5 rounded-md shadow-sm hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </main>
+
+        <!-- <footer class="w-full bg-white text-right p-4">
+          Built by
+          <a target="_blank" href="https://davidgrzyb.com" class="underline"
+            >David Grzyb</a
+          >.
+        </footer> -->
+      </div>
+    </div>
+
+    <!-- AlpineJS -->
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      defer
+    ></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+      integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs="
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="module" src="../js/admin-crud.js"></script>
+    <script src="../js/admin-functions.js"></script>
+  </body>
+</html>

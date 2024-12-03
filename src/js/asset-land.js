@@ -52,7 +52,16 @@ async function fetchAndDisplayData() {
           <td class="px-6 py-4 border">${asset.propertyNumber || "-"}</td>
           <td class="px-6 py-4 border">${asset.currentCondition || "-"}</td>
           <td class="px-6 py-4 border">${asset.sourceOfFund || "-"}</td>
-          <td class="px-6 py-4 border">${asset.costOfAcquisition || "-"}</td>
+          <td class="px-6 py-4 border">
+          ${
+            asset.costOfAcquisition
+              ? parseFloat(asset.costOfAcquisition).toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              : "-"
+          }
+          </td>
           <td class="px-6 py-4 border">${asset.dateOfAcquisition || "-"}</td>
           <td class="px-6 py-4 border">${asset.totalLifeYears || "-"}</td>
           <td class="px-6 py-4 border">${asset.accountableOfficer || "-"}</td>
@@ -222,7 +231,7 @@ function handleDelete(event) {
       console.error("Error deleting data:", error);
       alert("An error occurred while deleting the item.");
       console.log("Item ID:", itemId);
-      console.log("Firebase Path:", `assetRegistry/buildings/${itemId}`);
+      console.log("Firebase Path:", `assetRegistry/land/${itemId}`);
     }
   };
 

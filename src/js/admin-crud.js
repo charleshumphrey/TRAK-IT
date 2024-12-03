@@ -133,3 +133,49 @@ try {
         });
     });
 } catch {}
+
+// ADDING DATA TO ASSET REGISTRY - SEMI HIGH VALUE
+try {
+  document
+    .getElementById("assetFormSemiHighValue")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const assetData = {
+        officeType: document.getElementById("officeType").value,
+        regionalDivisionOffice: document.getElementById(
+          "regionalDivisionOffice"
+        ).value,
+        assetClassification: document.getElementById("assetClassification")
+          .value,
+        assetSubClass: document.getElementById("assetSubClass").value,
+        uacsObjectCode: document.getElementById("uacsObjectCode").value,
+        assetItem: document.getElementById("assetItem").value,
+        manufacturer: document.getElementById("manufacturer").value,
+        model: document.getElementById("model").value,
+        serialNumber: document.getElementById("serialNumber").value,
+        specification: document.getElementById("specification").value,
+        propertyNumber: document.getElementById("propertyNumber").value,
+        currentCondition: document.getElementById("currentCondition").value,
+        sourceOfFund: document.getElementById("sourceOfFund").value,
+        costOfAcquisition: document.getElementById("costOfAcquisition").value,
+        dateOfAcquisition: document.getElementById("dateOfAcquisition").value,
+        totalLifeYears: document.getElementById("totalLifeYears").value,
+        accountableOfficer: document.getElementById("accountableOfficer").value,
+        assetLocation: document.getElementById("assetLocation").value,
+        remarks: document.getElementById("remarks").value,
+      };
+
+      const assetDataRef = push(ref(db, `assetRegistry/semiHighValue/`));
+
+      set(assetDataRef, assetData)
+        .then(() => {
+          alert("Data saved successfully!");
+          window.location.href = "admin-semi-high-value.html";
+        })
+        .catch((error) => {
+          console.error("Error saving data:", error);
+          alert("Error saving data: " + error.message);
+        });
+    });
+} catch {}

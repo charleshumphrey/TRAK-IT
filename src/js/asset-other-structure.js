@@ -111,7 +111,6 @@ function handleEdit(event) {
       if (snapshot.exists()) {
         const itemData = snapshot.val();
 
-        // Populate the form with fetched data
         document.getElementById("articleItem").value =
           itemData.articleItem || "";
         document.getElementById("description").value =
@@ -126,10 +125,8 @@ function handleEdit(event) {
           itemData.totalCostValue || "";
         document.getElementById("remarks").value = itemData.remarks || "";
 
-        // Show the modal
         document.getElementById("editModal").style.display = "flex";
 
-        // Update the item on form submission
         document.getElementById("editForm").onsubmit = async (e) => {
           e.preventDefault();
 
