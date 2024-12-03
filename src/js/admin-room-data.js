@@ -68,120 +68,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
         roomDataTableBody.appendChild(row);
       });
-
-      document.getElementById("generate-rcpi").addEventListener("click", () => {
-        const { jsPDF } = window.jspdf;
-
-        const doc = new jsPDF("l", "mm", "a4");
-
-        doc.addFont("Times-Roman", "Times", "normal");
-
-        doc.setFont("Times", "normal");
-        doc.setFontSize(10);
-
-        const title = "REPORT ON THE PHYSICAL COUNT OF INVENTORIES (RPCI)";
-        const subtitle = "ICT Equipment";
-
-        const currentDate = formatDate(new Date());
-
-        const titleX =
-          (doc.internal.pageSize.width -
-            doc.getStringUnitWidth(title) * doc.internal.getFontSize()) /
-          2;
-        const subtitleX =
-          (doc.internal.pageSize.width -
-            doc.getStringUnitWidth(subtitle) * doc.internal.getFontSize()) /
-          2;
-
-        doc.text(title, titleX, 10);
-        doc.setFontSize(8);
-        doc.text(subtitle, subtitleX, 20);
-
-        doc.setFontSize(8);
-        doc.text(`Date: ${currentDate}`, 10, 30);
-
-        doc.setFontSize(8);
-        doc.text(
-          `Room Number: ${roomTitle.querySelector("strong").textContent}`,
-          10,
-          40
-        );
-
-        const headers = [
-          "Article",
-          "Description",
-          "Stock Number",
-          "Serial Number",
-          "Model",
-          "Unit of Measure",
-          "Unit Value",
-          "Balance Per Card (Quantity)",
-          "On Hand Per Count (Quantity)",
-          "Shortage/Overage Quantity",
-          "Shortage/Overage Value",
-          "Remarks",
-        ];
-
-        const rows = Object.values(roomData).map((data) => [
-          data.article,
-          data.description,
-          data.stockNumber,
-          data.serialNumber || "N/A",
-          data.model || "N/A",
-          data.unitOfMeasure,
-          data.unitValue,
-          data.balancePerCard,
-          data.onHandPerCount,
-          data.shortageQuantity,
-          data.shortageValue,
-          data.remarks || "N/A",
-        ]);
-
-        doc.autoTable({
-          head: [headers],
-          body: rows,
-          startY: 50,
-          theme: "grid",
-          margin: { top: 10, bottom: 10 },
-          tableWidth: "auto",
-          columnStyles: {
-            0: { halign: "center", cellWidth: "auto" },
-            1: { halign: "center", cellWidth: "auto" },
-            2: { halign: "center", cellWidth: "auto" },
-            3: { halign: "center", cellWidth: "auto" },
-            4: { halign: "center", cellWidth: "auto" },
-            5: { halign: "center", cellWidth: "auto" },
-            6: { halign: "center", cellWidth: "auto" },
-            7: { halign: "center", cellWidth: "auto" },
-            8: { halign: "center", cellWidth: "auto" },
-            9: { halign: "center", cellWidth: "auto" },
-            10: { halign: "center", cellWidth: "auto" },
-            11: { halign: "center", cellWidth: "auto" },
-
-            1: { cellWidth: 50 },
-            11: { cellWidth: 50 },
-          },
-          headStyles: {
-            fillColor: [255, 255, 255],
-            textColor: [0, 0, 0],
-            fontStyle: "normal",
-            lineColor: [0, 0, 0],
-            lineWidth: 0.2,
-            halign: "center",
-            fontSize: 8,
-          },
-          bodyStyles: {
-            lineColor: [0, 0, 0],
-            lineWidth: 0.2,
-            fontSize: 8,
-          },
-        });
-
-        const scale = 0.8;
-        doc.scale(scale);
-
-        doc.save("RCPI_Report.pdf");
-      });
     } else {
       alert("No data found for this room.");
     }
@@ -192,3 +78,285 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
   }
 });
+
+try {
+  function generateRCPI() {
+    const roomId = getQueryParam("roomId");
+    const assetRegistryRef = ref(db, `roomDatas/${roomId}`);
+
+    get(assetRegistryRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const workbook = new ExcelJS.Workbook();
+          const worksheet = workbook.addWorksheet("RPCI ");
+
+          const now = new Date();
+          const monthNames = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
+          const currentMonth = monthNames[now.getMonth()];
+          const currentDate = now.getDate();
+          const currentYear = now.getFullYear();
+
+          worksheet.getColumn("A").width = 20;
+          worksheet.getColumn("B").width = 50;
+          worksheet.getColumn("C").width = 21;
+          worksheet.getColumn("D").width = 22;
+          worksheet.getColumn("E").width = 22;
+          worksheet.getColumn("F").width = 22;
+          worksheet.getColumn("G").width = 22;
+          worksheet.getColumn("H").width = 20;
+          worksheet.getColumn("I").width = 20;
+          worksheet.getColumn("J").width = 20;
+          worksheet.getColumn("K").width = 20;
+          worksheet.getColumn("L").width = 50;
+
+          worksheet.mergeCells("A1:L1");
+          worksheet.getCell("A1").value =
+            "REPORT ON THE PHYSICAL COUNT OF INVENTORIES (RPCI)";
+          worksheet.getCell("A1").alignment = { horizontal: "center" };
+          worksheet.getCell("A1").font = { bold: true, size: 16 };
+
+          worksheet.mergeCells("A2:L2");
+          worksheet.getCell("A2").value = "ICT EQUIPMENT";
+          worksheet.getCell("A2").alignment = { horizontal: "center" };
+          worksheet.getCell("A2").font = { bold: true, size: 16 };
+
+          worksheet.mergeCells("A3:L3");
+          worksheet.getCell("A3").value = "(Type of Inventory Item)";
+          worksheet.getCell("A3").alignment = { horizontal: "center" };
+          worksheet.getCell("A3").font = { size: 10 };
+
+          worksheet.mergeCells("A4:L4");
+          worksheet.getCell(
+            "A4"
+          ).value = `As at ${currentMonth} ${currentDate}, ${currentYear}`;
+          worksheet.getCell("A4").alignment = { horizontal: "center" };
+          worksheet.getCell("A4").font = { bold: true, size: 12 };
+
+          // worksheet.addRow([]);
+          // worksheet.addRow([]);
+
+          worksheet.mergeCells("A6:B6");
+          worksheet.getCell(
+            "A6"
+          ).value = `Fund Cluster : ________________________________`;
+          worksheet.getCell("A6").font = { bold: true, size: 12 };
+
+          worksheet.mergeCells("A8:J8");
+          worksheet.getCell(
+            "A8"
+          ).value = `For which  Darcel S. Solanoy , Designated School Facilities Coordinator, FE DEL MUNDO NATIONAL HIGH SCHOOL  is accountable, having assumed such accountability on ${currentMonth} ${currentYear}.									
+`;
+          worksheet.getCell("A8").font = { bold: true, size: 12 };
+
+          const headers = [
+            "Article",
+            "Description",
+            "Stock Number",
+            "Serial Number",
+            "Model",
+            "Unit of Measure",
+            "Unit Value",
+            "Balance Per Card (Quantity)",
+            "On Hand Per Count (Quantity)",
+            "Shortage/Overage (Quantity)",
+            "Shortage/Overage (Value)",
+            "Remarks",
+          ];
+
+          const headerRow = worksheet.addRow(headers);
+          headerRow.height = 50;
+
+          headerRow.eachCell((cell) => {
+            cell.font = { bold: true };
+            cell.alignment = {
+              horizontal: "center",
+              vertical: "middle",
+              wrapText: true,
+            };
+            cell.border = {
+              top: { style: "thin" },
+              left: { style: "thin" },
+              bottom: { style: "thin" },
+              right: { style: "thin" },
+            };
+          });
+
+          const currencyFormatter = new Intl.NumberFormat("en-US", {
+            style: "decimal",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+
+          Object.keys(data).forEach((assetId) => {
+            const asset = data[assetId];
+            const unitValue = asset.unitValue
+              ? currencyFormatter.format(asset.unitValue)
+              : "";
+            const row = [
+              asset.article || "",
+              asset.description || "",
+              asset.stockNumber || "",
+              asset.serialNumber || "",
+              asset.model || "",
+              asset.unitOfMeasure || "",
+              asset.unitValue || "",
+              asset.balancePerCard || "",
+              asset.onHandPerCount || "",
+              asset.shortageQuantity || "",
+              asset.shortageValue || "",
+              asset.remarks || "",
+            ];
+            const dataRow = worksheet.addRow(row);
+
+            dataRow.eachCell((cell, colNumber) => {
+              cell.border = {
+                top: { style: "thin" },
+                left: { style: "thin" },
+                bottom: { style: "thin" },
+                right: { style: "thin" },
+              };
+              cell.alignment = { vertical: "middle" };
+
+              if (colNumber === 7 || colNumber === 11) {
+                cell.alignment = { vertical: "middle", horizontal: "right" };
+              }
+              if (
+                colNumber === 3 ||
+                colNumber === 8 ||
+                colNumber === 9 ||
+                colNumber === 10
+              ) {
+                cell.alignment = { vertical: "middle", horizontal: "center" };
+              }
+            });
+          });
+
+          worksheet.addRow([]);
+          worksheet.addRow([]);
+
+          worksheet.getCell(`A${worksheet.lastRow.number}`).value =
+            "Prepared by:";
+          worksheet.getCell(`E${worksheet.lastRow.number}`).value =
+            "Verified by:";
+          worksheet.mergeCells(
+            `H${worksheet.lastRow.number}:I${worksheet.lastRow.number}`
+          );
+          worksheet.getCell(`K${worksheet.lastRow.number}`).value =
+            "Certified Correct by:";
+
+          worksheet.addRow([]);
+          worksheet.addRow([]);
+
+          worksheet.getCell(`B${worksheet.lastRow.number}`).value = "";
+          worksheet.getCell(`B${worksheet.lastRow.number}`).border = {
+            bottom: {
+              style: "thin",
+              color: { argb: "FF000000" },
+            },
+          };
+          worksheet.getCell(`B${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell(`B${worksheet.lastRow.number}`).font = {
+            bold: true,
+            underline: true,
+          };
+
+          worksheet.mergeCells(
+            `F${worksheet.lastRow.number}:G${worksheet.lastRow.number}`
+          );
+          worksheet.getCell(`F${worksheet.lastRow.number}`).value =
+            "DARCEL S. SOLANOY";
+          worksheet.getCell(`F${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell(`F${worksheet.lastRow.number}`).font = {
+            bold: true,
+            underline: true,
+          };
+
+          worksheet.getCell(`L${worksheet.lastRow.number}`).value =
+            "BEDILLA B. ESTANDA";
+          worksheet.getCell(`L${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+          worksheet.getCell(`L${worksheet.lastRow.number}`).font = {
+            bold: true,
+            underline: true,
+          };
+
+          worksheet.addRow([]);
+
+          worksheet.getCell(`B${worksheet.lastRow.number}`).value =
+            "Teacher and Grade Level";
+          worksheet.getCell(`B${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+
+          worksheet.mergeCells(
+            `F${worksheet.lastRow.number}:G${worksheet.lastRow.number}`
+          );
+          worksheet.getCell(`F${worksheet.lastRow.number}`).value =
+            "Physical Facility Coordinator/Property Custodian";
+          worksheet.getCell(`F${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+
+          worksheet.getCell(`L${worksheet.lastRow.number}`).value =
+            "Principal III";
+          worksheet.getCell(`L${worksheet.lastRow.number}`).alignment = {
+            horizontal: "center",
+            vertical: "middle",
+          };
+
+          workbook.xlsx
+            .writeBuffer()
+            .then((buffer) => {
+              const blob = new Blob([buffer], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              });
+              const url = window.URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = `RCPI_${currentMonth}_${currentYear}.xlsx`;
+              link.click();
+              window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+              console.error("Error creating Excel file:", error);
+            });
+        } else {
+          alert("No data available.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        alert("Error fetching data: " + error.message);
+      });
+  }
+
+  document
+    .getElementById("generateRCPI")
+    .addEventListener("click", generateRCPI);
+} catch (error) {
+  console.error("Unexpected error:", error);
+}
