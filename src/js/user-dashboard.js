@@ -89,9 +89,77 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   } catch (error) {
     console.error("Error fetching room data:", error);
-    alert(
-      "An error occurred while fetching room data. Please try again later."
-    );
+  }
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const roomId = localStorage.getItem("roomId");
+
+    const roomDataRef = ref(db, `rooms/${roomId}`);
+
+    const snapshot = await get(roomDataRef);
+
+    if (snapshot.exists()) {
+      const roomData = snapshot.val();
+
+      const container = document.getElementById("container");
+      container.innerHTML = ""; // Clear previous content
+
+      const roomInfoContainer = document.createElement("div");
+      roomInfoContainer.classList.add(
+        "p-4",
+        "bg-white",
+        "shadow-sm",
+        "rounded-md",
+        "w-full"
+      );
+
+      const roomTitle = document.createElement("h2");
+      roomTitle.classList.add(
+        "text-xl",
+        "font-semibold",
+        "text-gray-800",
+        "text-center",
+        "mb-4"
+      );
+      roomTitle.textContent = roomData.roomName;
+
+      roomInfoContainer.appendChild(roomTitle);
+
+      const roomFields = [
+        { label: "Room Name", value: roomData.roomName },
+        { label: "Acquisition Cost", value: roomData.acquisitionCost },
+        { label: "Date Acquired", value: roomData.dateAcquired },
+        { label: "Date Issued", value: roomData.dateIssued },
+        { label: "Description", value: roomData.description },
+        { label: "Property No", value: roomData.propertyNo },
+      ];
+
+      roomFields.forEach((field) => {
+        const fieldDiv = document.createElement("div");
+        fieldDiv.classList.add("py-2");
+
+        const label = document.createElement("span");
+        label.classList.add("font-medium", "text-gray-700");
+        label.textContent = `${field.label}:`;
+
+        const value = document.createElement("span");
+        value.classList.add("text-gray-600");
+        value.textContent = field.value || "N/A";
+
+        fieldDiv.appendChild(label);
+        fieldDiv.appendChild(value);
+        roomInfoContainer.appendChild(fieldDiv);
+      });
+
+      container.appendChild(roomInfoContainer);
+    } else {
+      container.innerHTML =
+        "<p class='text-center text-gray-600'>No room data found for this room ID.</p>";
+    }
+  } catch (error) {
+    console.error("Error fetching room data:", error);
   }
 });
 

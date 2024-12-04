@@ -205,6 +205,9 @@ try {
 
       const assetDataRef = push(ref(db, `rcppe/`));
 
+      console.log("Name element:", nameElement);
+      console.log("Full Name element:", fullnameElement);
+      console.log("Room ID:", roomId);
       set(assetDataRef, assetData)
         .then(() => {
           alert("Data saved successfully!");

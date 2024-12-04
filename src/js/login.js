@@ -37,7 +37,7 @@ async function login(event) {
 
             localStorage.setItem("name", userData.name);
             localStorage.setItem("type", userData.type);
-
+            localStorage.setItem("userId", userSnapshot.key);
             localStorage.setItem("roomId", userData.roomId);
             localStorage.setItem("isLoggedIn", true);
 
